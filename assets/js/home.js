@@ -7,7 +7,7 @@ $(document).ready(function() {
 });
 
 function initialize() {
-    fetch('https://Gojek One-api.herokuapp.com/slider', {
+    fetch('https://gojek-day2-api.herokuapp.com/slider', {
             method: 'GET', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ function initialize() {
             console.error('Error:', error);
         });
 
-    fetch('https://Gojek One-api.herokuapp.com/new-release', {
+    fetch('https://gojek-day2-api.herokuapp.com/new-release', {
             method: 'GET', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',

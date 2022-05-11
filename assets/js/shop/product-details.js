@@ -13,7 +13,7 @@ $(document).ready(function() {
 });
 
 function initialize() {
-    fetch('https://Gojek One-api.herokuapp.com/', {
+    fetch('https://gojek-day2-api.herokuapp.com/', {
             method: 'GET', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
