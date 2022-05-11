@@ -2,17 +2,21 @@ var products1 = new Array();
 var loadTL = new TimelineMax();
 var logo = $('.logo-load');
 var productTitle = ''
+var _filter = "";
+let productDetails;
 $(document).ready(function() {
+    var url = window.location.href.split("/")
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
     // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
     productTitle = params.name;
+    _filter = params.filter;
     $(".logo-load").css({ "visibility": "inherit", "opacity": "1" });
-    initialize();
+    initialize(_filter);
 });
 
-function initialize() {
+function initialize(_filter) {
     fetch('https://gojek-day2-api.herokuapp.com/', {
             method: 'GET', // or 'PUT'
             headers: {
@@ -21,7 +25,13 @@ function initialize() {
         })
         .then(response => response.json())
         .then(data => {
-            let productDetails = data.products.filter(ele => ele["Product Title"].trim().toLowerCase() === productTitle.toLowerCase());
+            if(_filter === "sage"){
+                productDetails = data["products"].sage.filter(ele => ele["Product Title"].trim().toLowerCase() === productTitle.toLowerCase());
+            }else if(_filter === "simon"){
+                productDetails = data["products"].simon.filter(ele => ele["Product Title"].trim().toLowerCase() === productTitle.toLowerCase());
+            }else{
+                productDetails = data["products"].books.filter(ele => ele["Product Title"].trim().toLowerCase() === productTitle.toLowerCase());
+            }
             if (productDetails.length) {
                 $("#noFound").hide()
                 $("#found").show()
@@ -59,9 +69,13 @@ function initialize() {
                 $(".product__text").text(productDetails[0].Description);
                 $("#genre").text(productDetails[0].Genre);
                 $(".product__price").text(productDetails[0].Price);
-                $(".chars__status").text(productDetails[0]["Status (Sold Out/ In Stock)"]);
-                document.getElementById("buyNow").onclick = function() {
-                    window.open(productDetails[0]["Buy Button Link"], '_blank');
+                productDetails[0]["Buy Button Text - 1"] ? $("#button-1").text(productDetails[0]["Buy Button Text - 1"]) : $("#col__1").hide()
+                productDetails[0]["Buy Button Text - 2"] ? $("#button-2").text(productDetails[0]["Buy Button Text - 2"]) : $("#col__2").hide()
+                document.getElementById("buyNow-1").onclick = function() {
+                    window.open(productDetails[0]["Buy Button Link - 1"], '_blank');
+                }
+                document.getElementById("buyNow-2").onclick = function() {
+                    window.open(productDetails[0]["Buy Button Link - 2"], '_blank');
                 }
             } else {
                 $("#found").hide()
